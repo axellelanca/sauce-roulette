@@ -6,14 +6,19 @@ import { Classe, Student } from 'src/app/models';
 import { StudentService } from 'src/app/shared/services/student.service';
 
 @Component({
-  selector: 'app-edit-student',
-  templateUrl: './edit-student.component.html',
-  styleUrls: ['./edit-student.component.scss'],
+  selector: 'app-add-student',
+  templateUrl: './add-student.component.html',
+  styleUrls: ['./add-student.component.scss'],
 })
-export class EditStudentComponent implements OnInit {
+export class AddStudentComponent implements OnInit {
 
   // typer avec la structure disponible dans "models > student.ts"
-  student!: Student;
+  student: Student = {
+    id: '',
+    name: '',
+    classe: '',
+  
+};
   classes: String[] = [];
 
   studentForm!: FormGroup;
@@ -21,29 +26,22 @@ export class EditStudentComponent implements OnInit {
   // injecter le service StudentService
   constructor(private fb: FormBuilder, private location: Location, private activatedRoute: ActivatedRoute, private studentService: StudentService) {
 
-    
+    this.studentForm = this.fb.group({
+      name: this.fb.control(this.student.name, {
+        validators: [Validators.required],
+      }),
+      classe: this.fb.control(this.student.classe, {
+        validators: [Validators.required],
+      }),
+    });
+
+
     // initialiser la liste des classes disponibles avec le service StudentService
     const availableClasses$ = this.studentService.getAllClasses();
     availableClasses$.subscribe(classes => {
       this.classes = classes.map(classe => classe.id)
     });
 
-    this.activatedRoute.params.subscribe(params => {
-      // récupérer l'étudiant grâce à son id et au service StudentService
-      const id = params.id;
-      const student$ = this.studentService.getStudentById(id);
-      student$.subscribe(student => {
-        this.student = student;
-        this.studentForm = this.fb.group({
-          name: this.fb.control(this.student.name, {
-            validators: [Validators.required]
-          }),
-          classe: this.fb.control(this.student.classe, {
-            validators: [Validators.required]
-          })
-        });
-      });
-    });
   }
 
   ngOnInit(): void { }
@@ -53,7 +51,7 @@ export class EditStudentComponent implements OnInit {
     this.student.name = this.studentForm.value.name;
     this.student.classe = this.studentForm.value.classe;
 
-    const updatedStudent$ = this.studentService.updateStudent(this.student);
+    const updatedStudent$ = this.studentService.createStudent(this.student);
     updatedStudent$.subscribe((student) => {})
 
   }

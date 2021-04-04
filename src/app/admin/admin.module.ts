@@ -4,11 +4,16 @@ import { AdminComponent } from './admin.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { EditStudentComponent } from './edit-student/edit-student.component';
+import { AddStudentComponent } from './add-student/add-student.component';
 
 const routes: Routes = [
   {
     path: '',
     component: AdminComponent
+  },
+  {
+    path: 'student/add',
+    component: AddStudentComponent
   },
   {
     path: 'student/:id',
@@ -21,7 +26,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [AdminComponent, EditStudentComponent],
+  declarations: [AdminComponent, EditStudentComponent, AddStudentComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

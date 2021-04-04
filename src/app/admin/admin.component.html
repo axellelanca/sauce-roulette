@@ -4,7 +4,7 @@
             <mat-label>Filter</mat-label>
             <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
         </mat-form-field>    
-        <button mat-stroked-button color="primary" class="admin__add-student-btn">Ajouter un étudiant</button>
+        <button mat-stroked-button color="primary" class="admin__add-student-btn" (click)="addStudent()">Ajouter un étudiant</button>
     </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     
